@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CozyCabins - Home</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+</head>
+<body>
+
+<header>
+    <h1>Welcome to CozyCabins</h1>
+    <nav>
+        <ul>
+            <li><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="{% url 'book_cabin' %}">Book</a></li>
+            <li><a href="{% url 'your_bookings' %}">Your Bookings</a></li>
+        </ul>
+    </nav>
+    <div class="auth-links">
+        {% if user.is_authenticated %}
+            <span>Welcome, {{ user.first_name }}</span> | <a href="{% url 'logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}">Register</a>
+        {% endif %}
+    </div>
+</header>
+<main>
+<section class="intro-section">
+    <h2>Your Perfect Getaway Awaits</h2>
+    <p>
+        CozyCabins is your ultimate destination for a peaceful retreat in the heart of nature. We offer a variety of charming cabins
+        surrounded by breathtaking scenery, perfect for a weekend getaway or a longer vacation. Whether you're seeking adventure
+        or simply want to unwind, CozyCabins has something special for you.
+    </p>
+    <p>
+        All of our cabins are fully equipped with modern amenities to ensure a comfortable stay. From relaxing in front of the fireplace
+        to enjoying a morning coffee on the porch, every detail has been designed with your comfort in mind. Ready to escape to
+        your cozy cabin? Explore our available cabins below and book your stay today!
+    </p>
+    <p class="cta">
+        Browse Available Cabins and book your perfect cabin escape.
+    </p>
+</section>
+
+<section class="cabins-list">
+    <div class="cabin-cards">
+        {% for cabin in cabins %}
+            <div class="cabin-card">
+                <!-- Displaying Cabin Name -->
+                <h3>{{ cabin.name }}</h3>
+
+                <!-- Displaying Cabin Image -->
+                <img src="{{ cabin.image.url }}" alt="{{ cabin.name }}">
+
+                <!-- Displaying Cabin Description -->
+                <p>{{ cabin.description }}</p>
+
+                <!-- Displaying Cabin Price -->
+                <p class="price">${{ cabin.price_per_night }} per night</p>
+
+                <!-- Booking Link -->
+                <a href="{% url 'book_cabin' %}?cabin_id={{ cabin.id }}" class="book-button">Book Now</a>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+</main>
+<footer>
+    <p>&copy; 2024 CozyCabins - Your Perfect Getaway</p>
+</footer>
+
+</body>
+</html>

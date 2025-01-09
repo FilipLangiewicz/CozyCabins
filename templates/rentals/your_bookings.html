@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Bookings</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Your Bookings</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'book_cabin' %}">Book</a></li>
+                <li><a href="{% url 'your_bookings' %}">Your Bookings</a></li>
+            </ul>
+        </nav>
+        <div class="auth-links">
+        {% if user.is_authenticated %}
+            <span>Welcome, {{ user.first_name }}</span> | <a href="{% url 'logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}">Register</a>
+        {% endif %}
+        </div>
+    </header>
+    <main>
+    <section class="bookings">
+    {% if bookings %}
+        <table class="bookings-table">
+            <thead>
+                <tr>
+                    <th>Cabin</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Total Nights</th>
+                    <th>Price (per night)</th>
+                    <th>Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking.cabin.name }}</td>
+                        <td>{{ booking.start_date }}</td>
+                        <td>{{ booking.end_date }}</td>
+                        <td>{{ booking.total_nights }}</td>
+                        <td>${{ booking.cabin.price_per_night }}</td>
+                        <td>${{ booking.total_price }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <!-- Download buttons -->
+        <div class="download-buttons">
+            <form action="{% url 'download_bookings' %}" method="get">
+                <button type="submit" name="format" value="xml">Download XML</button>
+                <button type="submit" name="format" value="xls">Download XLS</button>
+                <button type="submit" name="format" value="json">Download JSON</button>
+            </form>
+        </div>
+    {% else %}
+        <p>You have no bookings.</p>
+    {% endif %}
+    </section>
+
+    </main>
+    <footer>
+        <p>&copy; 2024 CozyCabins - Your Perfect Getaway</p>
+    </footer>
+</body>
+</html>

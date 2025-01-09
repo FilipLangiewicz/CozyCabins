@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>CozyCabins</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'book_cabin' %}">Book</a></li>
+                <li><a href="{% url 'your_bookings' %}">Your Bookings</a></li>
+            </ul>
+        </nav>
+        <div class="auth-links">
+            {% if user.is_authenticated %}
+                <span>Welcome, {{ user.first_name }}</span> | <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <main>
+        <section class="registration-form">
+            <div class="container">
+                <h2>Create Your Account</h2>
+                <p>Fill in the form below to create an account and start booking your cozy getaway.</p>
+                <form method="post" id="form_registration">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ form.as_p }}
+                    </div>
+                    <button type="submit" class="btn">Register</button>
+                </form>
+                <p class="login-redirect">Already have an account? <a href="{% url 'login' %}">Login here</a>.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 CozyCabins - Your Perfect Getaway</p>
+    </footer>
+    <script src="{% static 'js/registration_validation.js' %}"></script>
+</body>
+</html>

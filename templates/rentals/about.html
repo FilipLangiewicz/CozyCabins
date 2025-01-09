@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - CozyCabins</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>About CozyCabins</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'book_cabin' %}">Book</a></li>
+                <li><a href="{% url 'your_bookings' %}">Your Bookings</a></li>
+
+            </ul>
+        </nav>
+        <div class="auth-links">
+            {% if user.is_authenticated %}
+                <span>Welcome, {{ user.first_name }}</span> | <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+      </div>
+    </header>
+    <main>
+    <!-- About Section -->
+    <section class="about-section">
+        <h1>Welcome to CozyCabins</h1>
+        <p>Your perfect getaway destination for a peaceful retreat in the heart of nature.</p>
+        <p>At CozyCabins, we believe in providing our guests with a unique and relaxing experience. Whether you're here for a weekend escape or an extended stay, our cabins are designed to give you comfort and tranquility in a beautiful natural setting.</p>
+    </section>
+
+    <!-- Our Team Section -->
+    <section class="team">
+        <h2>Meet Our Team</h2>
+        <div class="team-members">
+            <div class="team-member">
+                <img src="{% static 'images/team_member1.jpg' %}" alt="Team Member 1">
+                <h3>John Doe</h3>
+                <p>Founder & CEO</p>
+                <p>With a passion for nature and hospitality, John founded CozyCabins to provide people with a peaceful and rejuvenating experience in the wild.</p>
+            </div>
+            <div class="team-member">
+                <img src="{% static 'images/team_member2.jpg' %}" alt="Team Member 2">
+                <h3>Jane Smith</h3>
+                <p>Operations Manager</p>
+                <p>Jane ensures that every cabin is maintained to the highest standards, providing our guests with a seamless and enjoyable stay.</p>
+            </div>
+            <div class="team-member">
+                <img src="{% static 'images/team_member3.jpg' %}" alt="Team Member 3">
+                <h3>Mark Johnson</h3>
+                <p>Guest Relations</p>
+                <p>Mark takes care of our guests, answering questions, making bookings, and ensuring everyone has a memorable experience.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact and Location Section -->
+    <section class="contact">
+        <h2>Contact Us</h2>
+        <p>If you have any questions or need more information, feel free to reach out to us. We're here to help!</p>
+        <p>Email: contact@cozycabins.com</p>
+        <p>Phone: +1 234 567 890</p>
+
+        <h3>Our Location</h3>
+        <p>We're located in the scenic hills of Wonderland. Come visit us for a relaxing stay!</p>
+
+    </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 CozyCabins. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

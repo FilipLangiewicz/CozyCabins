@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout - CozyCabins</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+<header>
+    <h1>CozyCabins</h1>
+    <nav>
+        <ul>
+            <li><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="{% url 'book_cabin' %}">Book</a></li>
+            <li><a href="{% url 'your_bookings' %}">Your Bookings</a></li>
+
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <section class="logout-section">
+        <h2>Are you sure you want to log out?</h2>
+        <p>If you log out, you will need to log in again to access your account.</p>
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-button">Yes, Log Out</button>
+        </form>
+        <a href="{% url 'index' %}" class="cancel-button">Cancel</a>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2024 CozyCabins - Your Perfect Getaway</p>
+</footer>
+
+</body>
+</html>

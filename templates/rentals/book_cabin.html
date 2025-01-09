@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Cabin</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+</head>
+<body>
+    <header>
+        <h1>Book a Cabin</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'book_cabin' %}">Book</a></li>
+                <li><a href="{% url 'your_bookings' %}">Your Bookings</a></li>
+            </ul>
+        </nav>
+        <div class="auth-links">
+            {% if user.is_authenticated %}
+                <span>Welcome, {{ user.first_name }}</span> | <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <section class="booking-form">
+        {% if user.is_authenticated %}
+
+            <h2>Complete your booking</h2>
+
+            <div class="selected-cabin" id="selected-cabin-image">
+                <img src="{% static 'images/default.jpg' %}" alt="No cabin selected" id="cabin-image" class="cabin-image">
+            </div>
+
+            <form method="post" id="booking-form">
+                {% csrf_token %}
+
+                <!-- Cabin Selection -->
+                <p class="cabin-select">
+                    <label for="id_cabin">Choose a Cabin:</label>
+                    <select name="cabin" id="id_cabin" required>
+                        {% for cabin in cabins %}
+                            <option value="{{ cabin.id }}" {% if selected_cabin and selected_cabin.id == cabin.id %}selected{% endif %}>
+                                {{ cabin.name }} - ${{ cabin.price_per_night }} per night
+                            </option>
+                        {% endfor %}
+                    </select>
+                </p>
+
+                <!-- Start Date -->
+                <p>
+                    <label for="id_start_date">Start Date:</label>
+                    <input type="date" name="start_date" id="id_start_date" required>
+                </p>
+
+                <!-- End Date -->
+                <p>
+                    <label for="id_end_date">End Date:</label>
+                    <input type="date" name="end_date" id="id_end_date" required>
+                </p>
+
+                <!-- Guest Name -->
+                <p>
+                    <label for="id_guest_name">Guest Name:</label>
+                    <input type="text" name="guest_name" id="id_guest_name" required>
+                </p>
+
+                <button type="submit" id="submit-btn">Book</button>
+            </form>
+        {% else %}
+            <p>You need to <a href="{% url 'login' %}">log in</a> to book a cabin.</p>
+        {% endif %}
+    </section>
+
+    <footer>
+        <p>&copy; 2024 CozyCabins - Your Perfect Getaway</p>
+    </footer>
+
+    <script src="{% static 'js/validation.js' %}"></script>
+    <script>
+            var cabins = [
+                {% for cabin in cabins %}
+                    {
+                        id: {{ cabin.id }},
+                        name: "{{ cabin.name }}",
+                        image_url: "{{ cabin.image.url }}"
+                    },
+                {% endfor %}
+            ];
+
+            document.getElementById('id_cabin').addEventListener('change', function() {
+                var selectedOption = this.options[this.selectedIndex];
+                var cabinId = selectedOption.value;
+                var selectedCabin = cabins.find(cabin => cabin.id == cabinId);
+
+                var imageElement = document.getElementById('cabin-image');
+                if (selectedCabin && selectedCabin.image_url) {
+                    imageElement.src = selectedCabin.image_url;
+                } else {
+                    imageElement.src = "{% static 'images/default.jpg' %}";
+                }
+            });
+
+            window.onload = function() {
+                var firstOption = document.getElementById('id_cabin').options[document.getElementById('id_cabin').selectedIndex];
+                var cabinId = firstOption.value;
+                var selectedCabin = cabins.find(cabin => cabin.id == cabinId);
+
+                document.getElementById('cabin-image').src = selectedCabin.image_url || "{% static 'images/default.jpg' %}";
+            }
+        </script>
+    </body>
+</html>
